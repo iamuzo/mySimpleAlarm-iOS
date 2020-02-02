@@ -83,10 +83,3 @@ class AlarmController {
        }
    }
 }
-
-// Mock Data
-var mockAlarms: [Alarm] {
-    let first = Alarm(title: "Sample One")
-    let second = Alarm(title: "Sample Two")
-    return [first, second]
-}
