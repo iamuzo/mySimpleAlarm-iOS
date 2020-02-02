@@ -64,8 +64,9 @@
 		0F1688AF23CCC5C2004963A5 /* mySimpleAlarm */ = {
 			isa = PBXGroup;
 			children = (
+				0F1688CB23CCD7BA004963A5 /* ModelControllers */,
+				0F1688CA23CCD7B2004963A5 /* ViewControllers */,
 				0F1688C523CCC601004963A5 /* Models */,
-				0F1688C723CCC61A004963A5 /* Controllers */,
 				0F1688C623CCC607004963A5 /* StoryBoards */,
 				0F1688C423CCC5CF004963A5 /* Resources */,
 			);
@@ -100,15 +101,6 @@
 			path = StoryBoards;
 			sourceTree = "<group>";
 		};
-		0F1688C723CCC61A004963A5 /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				0F1688CA23CCD7B2004963A5 /* ViewControllers */,
-				0F1688CB23CCD7BA004963A5 /* ModelControllers */,
-			);
-			path = Controllers;
-			sourceTree = "<group>";
-		};
 		0F1688CA23CCD7B2004963A5 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -116,7 +108,8 @@
 				0F1688D623CCECF3004963A5 /* AlarmViewController.swift */,
 				0F1688DA23CCFF90004963A5 /* AlarmDetailViewController.swift */,
 			);
-			path = ViewControllers;
+			name = ViewControllers;
+			path = Controllers/ViewControllers;
 			sourceTree = "<group>";
 		};
 		0F1688CB23CCD7BA004963A5 /* ModelControllers */ = {
