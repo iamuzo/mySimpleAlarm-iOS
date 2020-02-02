@@ -15,13 +15,6 @@ class Alarm: Codable {
     var isEnabled: Bool
     var startTime: Date
     var uuid: String
-    
-    //init(title: String, isEnabled: Bool = true, startTime: Date = Date(), uuid: String = UUID().uuidString) {
-    //    self.title = title
-    //    self.isEnabled = isEnabled
-    //    self.startTime = startTime
-    //    self.uuid = uuid
-    //}
   
     init(title: String, isEnabled: Bool = true, startTime: Date = Date()) {
         self.title = title

@@ -8,8 +8,7 @@
 
 import UIKit
 
-class AlarmViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ToggleSwitchTableViewCellDelegate  {
-    
+class AlarmViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     //MARK: Outlets
     @IBOutlet weak var alarmTableView: UITableView!
@@ -36,7 +35,7 @@ class AlarmViewController: UIViewController, UITableViewDelegate, UITableViewDat
         let alarm = AlarmController.sharedGlobalInstance.alarms[indexPath.row]
         cell.alarm = alarm
         cell.updateViews()
-        cell.delegate = self
+        cell.cellDelegate = self
         return cell
     }
     
@@ -55,9 +54,6 @@ class AlarmViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     
-    func toggleSwitchCell(isOn: Bool) {
-    }
-    
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         //IIDOO
@@ -70,4 +66,13 @@ class AlarmViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
 
+}
+
+extension AlarmViewController: ToggleSwitchTableViewCellDelegate {
+    func switchCellSwitchValueChanged(cell: SwitchTableViewCell) {
+        
+        guard let indexPath = alarmTableView.indexPath(for: cell) else { return}
+        let alarm = AlarmController.sharedGlobalInstance.alarms[indexPath.row]
+        AlarmController.sharedGlobalInstance.toggleEnabled(for: alarm)
+    }
 }

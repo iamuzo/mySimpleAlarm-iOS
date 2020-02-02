@@ -8,14 +8,14 @@
 
 import UIKit
 
-protocol ToggleSwitchTableViewCellDelegate {
-    func toggleSwitchCell(isOn: Bool)
+protocol ToggleSwitchTableViewCellDelegate: class {
+    func switchCellSwitchValueChanged(cell: SwitchTableViewCell)
 }
 
 class SwitchTableViewCell: UITableViewCell {
     
     var alarm: Alarm?
-    var delegate: ToggleSwitchTableViewCellDelegate?
+    var cellDelegate: ToggleSwitchTableViewCellDelegate?
 
     //MARK:- Outlets
     @IBOutlet weak var alarmStarttimeLabel: UILabel!
@@ -24,7 +24,7 @@ class SwitchTableViewCell: UITableViewCell {
     
     //MARK:- Actions
     @IBAction func switchValueChanged(_ sender: UISwitch) {
-        self.delegate?.toggleSwitchCell(isOn: sender.isOn)
+        cellDelegate?.switchCellSwitchValueChanged(cell: self)
     }
     
     func updateViews() {

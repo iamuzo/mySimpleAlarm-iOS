@@ -9,47 +9,12 @@
 import Foundation
 import UserNotifications
 
-protocol AlarmScheduler {
+protocol AlarmScheduler: class {
     func scheduleUserNotifications(for alarm: Alarm)
     func cancelUserNotifications(for alarm: Alarm)
 }
 
-extension AlarmScheduler {
-    //default implementaions for 2 protocol functions above
-    func scheduleUserNotifications(for alarm: Alarm) {
-        let notificationContent = UNMutableNotificationContent()
-        notificationContent.title = "Time's up!"
-        notificationContent.body = "Alarm: \(alarm.title) has gone off"
-        notificationContent.sound = UNNotificationSound.default
-        
-        let startTime = alarm.startTime
-        let triggerDate = Calendar.current.dateComponents(
-            [.hour, .minute, .second], from: startTime
-        )
-        let trigger = UNCalendarNotificationTrigger(
-            dateMatching: triggerDate,
-            repeats: true
-        )
-        
-        let request = UNNotificationRequest(
-            identifier: alarm.uuid,
-            content: notificationContent,
-            trigger: trigger
-        )
-        
-        UNUserNotificationCenter.current().add(request) { (error) in
-            if let error = error {
-                print("notification error: \(error.localizedDescription)")
-            }
-        }
-    }
-    
-    func cancelUserNotifications(for alarm: Alarm) {
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [alarm.uuid])
-    }
-}
-
-class AlarmController: AlarmScheduler {
+class AlarmController: AlarmScheduler{
     
     //MARK:- Global Shared Instance
     static let sharedGlobalInstance = AlarmController()
@@ -100,14 +65,22 @@ class AlarmController: AlarmScheduler {
         }
     }
     
+    func toggleEnabled(for alarm: Alarm){
+        alarm.isEnabled = !alarm.isEnabled
+        if alarm.isEnabled {
+            scheduleUserNotifications(for: alarm)
+        } else {
+            cancelUserNotifications(for: alarm)
+        }
+    }
     
     //MARK:- Local Persistence
     private func localFilePersistenceURL() -> URL {
-       let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-       let dir = path[0]
-       let filepath = "mySimpleAlarm.json"
-       let fileURL = dir.appendingPathComponent(filepath)
-       return fileURL
+        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let dir = path[0]
+        let filepath = "mySimpleAlarm.json"
+        let fileURL = dir.appendingPathComponent(filepath)
+        return fileURL
    }
     
     func saveToLocalPersistenceStore() {
@@ -132,4 +105,39 @@ class AlarmController: AlarmScheduler {
            print("Error loading data from local persistence store: \(error); \(error.localizedDescription)")
        }
    }
+}
+
+extension AlarmScheduler {
+    //default implementaions for 2 protocol functions above
+    func scheduleUserNotifications(for alarm: Alarm) {
+        let notificationContent = UNMutableNotificationContent()
+        notificationContent.title = "Time's up!"
+        notificationContent.body = "Alarm: \(alarm.title) has gone off"
+        notificationContent.sound = UNNotificationSound.default
+        
+        let startTime = alarm.startTime
+        let triggerDate = Calendar.current.dateComponents(
+            [.hour, .minute, .second], from: startTime
+        )
+        let trigger = UNCalendarNotificationTrigger(
+            dateMatching: triggerDate,
+            repeats: true
+        )
+        
+        let request = UNNotificationRequest(
+            identifier: alarm.uuid,
+            content: notificationContent,
+            trigger: trigger
+        )
+        
+        UNUserNotificationCenter.current().add(request) { (error) in
+            if let error = error {
+                print("notification error: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    func cancelUserNotifications(for alarm: Alarm) {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [alarm.uuid])
+    }
 }

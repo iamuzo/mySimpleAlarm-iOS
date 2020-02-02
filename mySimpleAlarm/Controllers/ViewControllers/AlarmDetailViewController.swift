@@ -8,10 +8,8 @@
 
 import UIKit
 
-class AlarmDetailViewController: UIViewController, ToggleSwitchTableViewCellDelegate {
+class AlarmDetailViewController: UIViewController {
 
-    
-    
     //MARK:- Properties
     var alarm: Alarm?
     
@@ -33,20 +31,9 @@ class AlarmDetailViewController: UIViewController, ToggleSwitchTableViewCellDele
     
     //MARK:- Actions
     @IBAction func enableAlarmButtonTapped(_ sender: UIButton) {
-        print("I am in AlarmDetailViewController")
         guard let alarm = alarm else { return }
-        let stateBeforeToggle = alarm.isEnabled
-        
-        // reverse the currented state
-        alarm.isEnabled = !stateBeforeToggle
-        
-        toggleSwitchCell(isOn: !stateBeforeToggle)
+        AlarmController.sharedGlobalInstance.toggleEnabled(for: alarm)
         navigationController?.popViewController(animated: true)
-    }
-
-    func toggleSwitchCell(isOn: Bool) {
-        guard let alarm = alarm else { return }
-        alarm.isEnabled = isOn
     }
     
     //MARK:- Custom Methods
@@ -96,8 +83,6 @@ class AlarmDetailViewController: UIViewController, ToggleSwitchTableViewCellDele
     }
     
     @objc func updateAlarmButtonTapped() {
-        print("update Alarm")
-        
         // first get the alarm that will be edited
         guard let alarm = alarm else {
             print("Alarm not found")
